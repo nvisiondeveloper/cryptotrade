@@ -1,0 +1,430 @@
+<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trade</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/tailwind.output.css" />
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+  <script src="./js/init-alpine.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+      body{
+        font-family: 'Poppins', sans-serif;
+      }
+    </style>
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <style>
+    .cl-red {
+      color: red !important;
+    }
+
+    .cl-green {
+      color: rgb(0, 217, 100) !important;
+    }
+
+      {
+        {
+         !-- animation for price change --
+      }
+    }
+
+    #all-price-span{
+      border-radius: 5px;
+      padding: 5px;
+    }
+
+    .price-eff-green {
+      animation: fadeOut-gr ease 5s;
+      -webkit-animation: fadeOut-gr ease 5s;
+      -moz-animation: fadeOut-gr ease 5s;
+      -o-animation: fadeOut-gr ease 5s;
+      -ms-animation: fadeOut-gr ease 5s;
+    }
+    @keyframes fadeOut-gr {
+      0% {
+        background-color: green;
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+
+    @-moz-keyframes fadeOut-gr {
+      0% {
+        background-color: green;
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+
+    @-webkit-keyframes fadeOut-gr {
+      0% {
+        background-color: green;
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+
+    @-o-keyframes fadeOut-gr {
+      0% {
+        background-color: green;
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+
+    @-ms-keyframes fadeOut-gr {
+      0% {
+        background-color: green;
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+
+    .price-eff-red {
+      animation: fadeOut ease 5s;
+      -webkit-animation: fadeOut ease 5s;
+      -moz-animation: fadeOut ease 5s;
+      -o-animation: fadeOut ease 5s;
+      -ms-animation: fadeOut ease 5s;
+    }
+
+    @keyframes fadeOut {
+      0% {
+        background-color: red;
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+
+    @-moz-keyframes fadeOut {
+      0% {
+        background-color: red;
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+
+    @-webkit-keyframes fadeOut {
+      0% {
+        background-color: red;
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+
+    @-o-keyframes fadeOut {
+      0% {
+        background-color: red;
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+
+    @-ms-keyframes fadeOut {
+      0% {
+        background-color: red;
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  {{> header}}
+  <main class="h-full overflow-y-auto">
+    <div class="container px-6 mx-auto grid">
+      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+        Trade
+      </h2>
+
+
+      <!-- Search Bar -->
+
+      <div class="flex justify-center flex-1 py-4">
+        <div class="relative w-full  focus-within:text-purple-500">
+          <div class="absolute inset-y-0 flex items-center pl-2">
+            <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <input id="search"
+            class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
+            type="text" placeholder="Search coins" aria-label="Search" />
+        </div>
+      </div>
+      <!-- New Table -->
+      <div class="w-full overflow-hidden rounded-lg shadow-xs">
+        <div class="w-full overflow-x-auto">
+          <table class="w-full whitespace-no-wrap" id="cointable">
+            <thead>
+              <tr
+                class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                <th class="px-4 py-3">Coin</th>
+                <th class="px-4 py-3">Amount</th>
+                <th class="px-4 py-3">Change(24h)</th>
+                <th class="px-4 py-3">Buy</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800" id="coin">
+
+            </tbody>
+          </table>
+        </div>
+        <div
+          class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+          <span class="flex items-center col-span-3">
+            Showing 21-30 of 100
+          </span>
+          <span class="col-span-2"></span>
+          <!-- Pagination -->
+          <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+            <nav aria-label="Table navigation">
+              <ul class="inline-flex items-center">
+                <li>
+                  <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
+                    aria-label="Previous">
+                    <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                      <path
+                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                        clip-rule="evenodd" fill-rule="evenodd"></path>
+                    </svg>
+                  </button>
+                </li>
+                <li>
+                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                    1
+                  </button>
+                </li>
+                <li>
+                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                    2
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple">
+                    3
+                  </button>
+                </li>
+                <li>
+                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                    4
+                  </button>
+                </li>
+                <li>
+                  <span class="px-3 py-1">...</span>
+                </li>
+                <li>
+                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                    8
+                  </button>
+                </li>
+                <li>
+                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                    9
+                  </button>
+                </li>
+                <li>
+                  <button class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
+                    aria-label="Next">
+                    <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                      <path
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd" fill-rule="evenodd"></path>
+                    </svg>
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </span>
+        </div>
+      </div>
+      <!-- Charts -->
+      <div x-show="isModalOpen" x-transition:enter="transition ease-out duration-150"
+        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center">
+        <!-- Modal -->
+        <div x-show="isModalOpen" x-transition:enter="transition ease-out duration-150"
+          x-transition:enter-start="opacity-0 transform translate-y-1/2" x-transition:enter-end="opacity-100"
+          x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
+          x-transition:leave-end="opacity-0  transform translate-y-1/2" @click.away="closeModal"
+          @keydown.escape="closeModal"
+          class="w-full px-6 py-4 overflow-hidden bg-white rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl"
+          role="dialog" id="modal">
+          <!-- Remove header if you don't want a close icon. Use modal body to place modal tile. -->
+          <header class="flex justify-end">
+            <button
+              class="inline-flex items-center justify-center w-6 h-6 text-gray-400 transition-colors duration-150 rounded dark:hover:text-gray-200 hover: hover:text-gray-700"
+              aria-label="close" @click="closeModal">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" role="img" aria-hidden="true">
+                <path
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd" fill-rule="evenodd"></path>
+              </svg>
+            </button>
+          </header>
+          <!-- Modal body -->
+          <div class="mt-4 mb-6">
+            <!-- Modal title -->
+            <p class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300">
+              Modal header
+            </p>
+            <!-- Modal description -->
+            <p class="text-sm text-gray-700 dark:text-gray-400">
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum et
+              eligendi repudiandae voluptatem tempore!
+            </p>
+          </div>
+          <footer
+            class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-50 dark:bg-gray-800">
+            <button @click="closeModal"
+              class="w-full px-5 py-3 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 sm:px-4 sm:py-2 sm:w-auto active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray">
+              Cancel
+            </button>
+            <button
+              class="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg sm:w-auto sm:px-4 sm:py-2 active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+              Accept
+            </button>
+          </footer>
+        </div>
+      </div>
+
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+      <script>
+        $(document).ready(function () {
+          var coins = {
+            "async": true, "crossDomain": true, "url":
+              "https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc",
+            "method": "GET"
+          }
+          $.ajax(coins).done(function (response) {
+            response.map(myFunction);
+            function myFunction(num) {
+              $("#coin").append('<tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><div class="flex items-center text-sm"><div class="relative w-8 h-8 mr-3 rounded-full md:block"><img class="object-cover w-full h-full rounded-full" src="' + num.image + '" alt="" loading="lazy"/><div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div></div><div><p class="font-semibold"><a href="/' + num.id + '">' + num.name + '</a></p><p class="text-xs text-gray-600 dark:text-gray-400">' + num.symbol + '</p></div></div></td><td id="coin-price-' + num.market_cap_rank + '" class="px-4 py-3 text-sm"><span id="all-price-span">₹' + num.current_price + '</span></td><td class="px-4 py-3 text-xs"><span class="changer px-2 py-1 font-semibold leading-tight rounded-full" id="coin-no-' + num.market_cap_rank + '">' + num.price_change_percentage_24h + '%</span></td><td class="px-4 py-3 text-sm">  <button @click="openModal" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">Buy</button>');
+
+              var temp = "#coin-no-" + num.market_cap_rank;
+              if (num.price_change_percentage_24h < 0) {
+                $(temp).addClass("cl-red");
+              }
+              else {
+                $(temp).addClass("cl-green");
+              }
+            }
+          });
+
+          setInterval(() => {
+            var coins = {
+              "async": true, "crossDomain": true, "url":
+                "https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc",
+              "method": "GET"
+            }
+            $.ajax(coins).done(function (response) {
+              response.map(myFunction);
+              async function myFunction(num) {
+                var temp = "#coin-no-" + num.market_cap_rank;
+                var temp2 = "#coin-price-" + num.market_cap_rank;
+                var per_change = num.price_change_percentage_24h + "%";
+                var price_change = "₹" + num.current_price;
+
+                // price change effect
+                var previous_price = $(temp2).text();
+                previous_price = previous_price.replace('₹', '');
+                previous_price = Number(previous_price);
+  
+                if (previous_price != num.current_price) {
+                  if (previous_price < num.current_price) {
+                    $(temp2 + " span").addClass("price-eff-green");
+                    console.log("price change in green");
+                    setTimeout(()=>{
+                      $(temp2 + " span").removeClass("price-eff-green");
+                    }, 5000);
+                  }
+                  else {
+                    $(temp2 + " span").addClass("price-eff-red");
+                    setTimeout(()=>{
+                      $(temp2 + " span").removeClass("price-eff-red");
+                    }, 5000);
+                  }
+                }
+
+                $(temp).text(per_change);
+                $(temp2 + " span").text(price_change);
+                if (num.price_change_percentage_24h < 0) {
+                  $(temp).removeClass("cl-green");
+                  $(temp).addClass("cl-red");
+                }
+                else {
+                  $(temp).removeClass("cl-red");
+                  $(temp).addClass("cl-green");
+                }
+              }
+            });
+          }, 5000);
+
+        });
+      </script>
+      <script>  
+      $(document).ready(function(){  
+           $('#search').keyup(function(){
+             // Search Text
+              var search = $(this).val();
+
+            // Hide all table tbody rows
+              $('table tbody tr').hide();
+
+              // Count total search result
+             var len = $('table tbody tr:not(.notfound) td:contains("'+search+'")').length;
+
+          if(len > 0){
+      // Searching text in columns and show match row
+            $('table tbody tr:not(.notfound) td:contains("'+search+'")').each(function(){
+           $(this).closest('tr').show();
+         });
+          }else{
+          $('.notfound').show();
+        }
+
+       });
+        $.expr[":"].contains = $.expr.createPseudo(function(arg) {
+   return function( elem ) {
+     return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+   };
+});
+      });
+  
+ </script>  
+</body>
+
+</html>

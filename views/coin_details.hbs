@@ -1,0 +1,612 @@
+<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="title"></title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="./css/tailwind.output.css" />
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <script src="./js/init-alpine.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" defer></script>
+    <script src="./js/charts-lines.js" defer></script>
+    <script src="./js/charts-pie.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" type="image/x-icon" href="" id="favicon_icon">
+    <link rel="stylesheet" href="./toaster/build/toastr.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+      body{
+        font-family: 'Poppins', sans-serif;
+      }
+    </style>
+    {{!--
+    <script src="https://cdn.tailwindcss.com"></script> --}}
+    <style>
+        .coin-li {
+            margin: 0 10px;
+        }
+
+        #coin-header {
+            font-size: 20px;
+            align-items: center;
+            font-weight: bold;
+            margin: 20px 5%;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+        }
+
+        #coin-symbol {
+            text-transform: uppercase;
+        }
+
+        .market-stats {
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+            width: 90%;
+            margin: 0 5%;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            padding: 5px 20px;
+        }
+
+        .ms-header {
+            text-align: center;
+            font-weight: bold;
+            margin: 10px;
+        }
+
+        .container-main {
+            overflow: auto;
+            scroll-behavior: smooth;
+        }
+
+        #coin-price-bt {
+            text-align: center;
+            font-weight: bold;
+            margin: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    {{> header}}
+    <div class="container-main w-full">
+        <ul id="coin-header" class="flex dark:text-gray-400 ">
+            <li id="coin-image" class="coin-li"></li>
+            <li id="coin-name" class="coin-li"></li>
+            <li id="coin-symbol" class="coin-li"></li>
+        </ul>
+        <canvas id="myChart" style="max-width:90%;margin: 0 5%;position:inherit" class="absolute"></canvas>
+        <h1 id="coin-price-bt" style="" class="dark:text-gray-400"></h1>
+        <div class="market-stats">
+            <h1 class="ms-header dark:text-gray-400">Market stats</i></h1>
+            <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
+                <!-- Card -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                            Market cap
+                        </p>
+                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-200" id="cd-market-cap">
+                        </p>
+                    </div>
+                </div>
+                <!-- Card -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                            Market cap rank
+                        </p>
+                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-200" id="cd-market-cap-rank">
+                        </p>
+                    </div>
+                </div>
+                <!-- Card -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                            High (24 Hours)
+                        </p>
+                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-200" id="cd-high">
+                        </p>
+                    </div>
+                </div>
+                <!-- Card -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                            Low (24 Hours)
+                        </p>
+                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-200" id="cd-low">
+                        </p>
+                    </div>
+                </div>
+                <!-- Card -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                            Price change (24 Hours)
+                        </p>
+                        <p class="text-lg font-semibold" id="cd-change">
+                        </p>
+                    </div>
+                </div>
+                <!-- Card -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                            Current price
+                        </p>
+                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-200" id="cd-current-price">
+                        </p>
+                    </div>
+                </div>
+                <!-- Card -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                            Total volume (24 Hours)
+                        </p>
+                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-200" id="cd-volume">
+                        </p>
+                    </div>
+                </div>
+                <!-- Card -->
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                            Market cap change
+                        </p>
+                        <p class="text-lg font-semibold" id="cd-market-cap-change">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        var coins = {
+            "async": true, "crossDomain": true, "url":
+                "https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc",
+            "method": "GET"
+        }
+
+        $.ajax(coins).done(function (response) {
+            response.map(myFunction);
+
+            function myFunction(num) {
+                if (num.id == "{{id}}") {
+                    $('#title').append("CryptoTrade | " + num.name);
+                    $('#coin-name').append(num.name);
+                    $('#coin-image').append('<img style="heigth:46;width:46" class="object-cover rounded-full" src="' + num.image + '" alt="" loading="lazy"/>');
+                    $('#coin-symbol').append(num.symbol);
+                    $('#coin-price-bt').append("₹" + num.current_price);
+                    $('#cd-market-cap').append("₹" + (num.market_cap / 1000000000).toFixed(2) + "B");
+                    $('#cd-market-cap-rank').append(num.market_cap_rank);
+                    $('#cd-high').append("₹" + num.high_24h);
+                    $('#cd-low').append("₹" + num.low_24h);
+                    $('#cd-change').append(num.price_change_percentage_24h + "%");
+                    $('#favicon_icon').attr("href", num.image)
+                    if (num.price_change_percentage_24h < 0) {
+                        $('#cd-change').css("color", "#b80c00");
+                        $('#cd-current-price').css("color", "#b80c00");
+                        $('#coin-price-bt').css("color", "#b80c00");
+                        $('#coin-price-bt').append(' <i class="fas fa-sort-down"></i>');
+                    }
+                    else {
+                        $('#cd-change').css("color", "#33ff33");
+                        $('#cd-current-price').css("color", "#33ff33");
+                        $('#coin-price-bt').css("color", "#33ff33");
+                        $('#coin-price-bt').append(' <i class="fas fa-sort-up"></i>');
+                    }
+                    $('#cd-current-price').append("₹" + num.current_price);
+                    $('#cd-volume').append("₹" + (num.total_volume / 1000000000).toFixed(2) + "B");
+                    $('#cd-market-cap-change').append(num.market_cap_change_percentage_24h + "%");
+                    if (num.market_cap_change_percentage_24h < 0) {
+                        $('#cd-market-cap-change').css("color", "#b80c00");
+                    }
+                    else {
+                        $('#cd-market-cap-change').css("color", "#33ff33");
+                    }
+                }
+            }
+        });
+    });
+</script>
+<script> // for chart
+    var coins = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://api.coingecko.com/api/v3/coins/{{id}}/market_chart?vs_currency=inr&days=1",
+        "method": "GET"
+    }
+    $.ajax(coins).done(function (response) {
+        var xValues = [];
+        var yValues = [];
+        var count = Object.keys(response.prices).length;
+        for (let x = 0; x < count; x += 1) {
+            var time = new Date(response.prices[x][0]);
+            var price = response.prices[x][1];
+
+            xValues.push(time.getHours() + ":" + time.getMinutes());
+            yValues.push(price);
+        }
+        if (yValues[1] > 1000000) {
+            new Chart("myChart", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "#000066",
+                        borderColor: "#7e3af2",
+                        data: yValues,
+                        pointHitRadius: 10,
+                        pointRadius: 0,
+                        borderWidth: 1
+                    }]
+                },
+                datalabels: {
+                    anchor: "end",
+                    align: "left",
+                    font: {
+                        color: "black"
+                    }
+                },
+                options: {
+                    hover: { mode: null },
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: false
+                            },
+                        }],
+                        yAxes: [{
+                            gridLines: {
+                                display: false
+                            },
+                            ticks: {
+                                callback: function (label, index, labels) {
+                                    return label / 1000000 + 'M';
+                                }
+                            }
+                        }]
+                    },
+                    title: {
+                        display: true,
+                        text: '{{id}}(1D)'
+                    },
+                    legend: { display: false }
+                }
+            });
+        }
+        else if (yValues[1] < 10000) {
+            new Chart("myChart", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "#000066",
+                        pointHitRadius: 20,
+                        borderColor: "#7e3af2",
+                        data: yValues,
+                        pointRadius: 0,
+                        borderWidth: 1
+                    }]
+                },
+                datalabels: {
+                    anchor: "end",
+                    align: "left",
+                    font: {
+                        color: "black"
+                    }
+                },
+                options: {
+                    hover: { mode: null },
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: false
+                            }
+                        }],
+                        yAxes: [{
+                            gridLines: {
+                                display: false
+                            }
+                        }]
+                    },
+                    title: {
+                        display: true,
+                        text: '{{id}}(1D)'
+                    },
+                    legend: { display: false }
+                }
+            });
+        }
+        else {
+            new Chart("myChart", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "#000066",
+                        borderColor: "#7e3af2",
+                        pointHitRadius: 20,
+                        data: yValues,
+                        pointRadius: 0,
+                        borderWidth: 1
+                    }]
+                },
+                datalabels: {
+                    anchor: "end",
+                    align: "left",
+                    font: {
+                        color: "black"
+                    }
+                },
+                options: {
+                    hover: { mode: null },
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: false
+                            }
+                        }],
+                        yAxes: [{
+                            gridLines: {
+                                display: false
+                            },
+                            ticks: {
+                                callback: function (label, index, labels) {
+                                    return label / 1000 + 'k';
+                                }
+                            }
+                        }]
+                    },
+                    title: {
+                        display: true,
+                        text: '{{id}}(1D)'
+                    },
+                    legend: { display: false }
+                }
+            });
+        }
+    });
+</script>
+<script>
+    // changing data frequently
+    setInterval(() => {
+        var coins = {
+            "async": true, "crossDomain": true, "url":
+                "https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc",
+            "method": "GET"
+        }
+        $.ajax(coins).done(function (response) {
+            response.map(myFunction);
+            function myFunction(num) {
+                if (num.id == "{{id}}") {
+                    $('#cd-market-cap').text("₹" + (num.market_cap / 1000000000).toFixed(2) + "B");
+                    $('#cd-market-cap-rank').text(num.market_cap_rank);
+                    $('#cd-high').text("₹" + num.high_24h);
+                    $('#cd-low').text("₹" + num.low_24h);
+                    $('#cd-change').text(num.price_change_percentage_24h + "%");
+                    if (num.price_change_percentage_24h < 0) {
+                        $('#cd-change').css("color", "#b80c00");
+                        $('#cd-current-price').css("color", "#b80c00");
+                        $('#coin-price-bt').css("color", "#b80c00");
+                        $('#coin-price-bt').html('₹' + num.current_price + ' <i class="fas fa-sort-down"></i>');
+                    }
+                    else {
+                        $('#cd-change').css("color", "#33ff33");
+                        $('#cd-current-price').css("color", "#33ff33");
+                        $('#coin-price-bt').css("color", "#33ff33");
+                        $('#coin-price-bt').html('₹' + num.current_price + ' <i class="fas fa-sort-up"></i>');
+                    }
+                    $('#cd-current-price').text("₹" + num.current_price);
+                    $('#cd-volume').text("₹" + (num.total_volume / 1000000000).toFixed(2) + "B");
+                    $('#cd-market-cap-change').text(num.market_cap_change_percentage_24h + "%");
+                    if (num.market_cap_change_percentage_24h < 0) {
+                        $('#cd-market-cap-change').css("color", "#b80c00");
+                    }
+                    else {
+                        $('#cd-market-cap-change').css("color", "#33ff33");
+                    }
+                }
+            }
+
+        });
+        // changing chart frequently
+        var coins = {
+            "async": true,
+            "crossDomain": true,
+            "url": "https://api.coingecko.com/api/v3/coins/{{id}}/market_chart?vs_currency=inr&days=1",
+            "method": "GET"
+        }
+        $.ajax(coins).done(function (response) {
+            var xValues = [];
+            var yValues = [];
+            var count = Object.keys(response.prices).length;
+            for (let x = 0; x < count; x += 1) {
+                var time = new Date(response.prices[x][0]);
+                var price = response.prices[x][1];
+
+                xValues.push(time.getHours() + ":" + time.getMinutes());
+                yValues.push(price);
+            }
+            if (yValues[1] > 1000000) {
+                new Chart("myChart", {
+                    type: "line",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: "#000066",
+                            borderColor: "#7e3af2",
+                            data: yValues,
+                            pointHitRadius: 10,
+                            pointRadius: 0,
+                            borderWidth: 1
+                        }]
+                    },
+                    datalabels: {
+                        anchor: "end",
+                        align: "left",
+                        font: {
+                            color: "black"
+                        }
+                    },
+                    options: {
+                        animation: {
+                            duration: 0
+                        },
+                        hover: { mode: null },
+                        scales: {
+                            xAxes: [{
+                                gridLines: {
+                                    display: false
+                                },
+                            }],
+                            yAxes: [{
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: {
+                                    callback: function (label, index, labels) {
+                                        return label / 1000000 + 'M';
+                                    }
+                                }
+                            }]
+                        },
+                        title: {
+                            display: true,
+                            text: '{{id}}(1D)'
+                        },
+                        legend: { display: false }
+                    }
+                });
+            }
+            else if (yValues[1] < 10000) {
+                new Chart("myChart", {
+                    type: "line",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: "#000066",
+                            pointHitRadius: 20,
+                            borderColor: "#7e3af2",
+                            data: yValues,
+                            pointRadius: 0,
+                            borderWidth: 1
+                        }]
+                    },
+                    datalabels: {
+                        anchor: "end",
+                        align: "left",
+                        font: {
+                            color: "black"
+                        }
+                    },
+                    options: {
+                        animation: {
+                            duration: 0
+                        },
+                        hover: { mode: null },
+                        scales: {
+                            xAxes: [{
+                                gridLines: {
+                                    display: false
+                                }
+                            }],
+                            yAxes: [{
+                                gridLines: {
+                                    display: false
+                                }
+                            }]
+                        },
+                        title: {
+                            display: true,
+                            text: '{{id}}(1D)'
+                        },
+                        legend: { display: false }
+                    }
+                });
+            }
+            else {
+                new Chart("myChart", {
+                    type: "line",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: "#000066",
+                            borderColor: "#7e3af2",
+                            pointHitRadius: 20,
+                            data: yValues,
+                            pointRadius: 0,
+                            borderWidth: 1
+                        }]
+                    },
+                    datalabels: {
+                        anchor: "end",
+                        align: "left",
+                        font: {
+                            color: "black"
+                        }
+                    },
+                    options: {
+                        animation: {
+                            duration: 0
+                        },
+                        hover: { mode: null },
+                        scales: {
+                            xAxes: [{
+                                gridLines: {
+                                    display: false
+                                }
+                            }],
+                            yAxes: [{
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: {
+                                    callback: function (label, index, labels) {
+                                        return label / 1000 + 'k';
+                                    }
+                                }
+                            }]
+                        },
+                        title: {
+                            display: true,
+                            text: '{{id}}(1D)'
+                        },
+                        legend: { display: false }
+                    }
+                });
+            }
+        });
+    }, 5000);
+</script>
+
+</html>

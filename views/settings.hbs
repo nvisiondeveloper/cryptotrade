@@ -1,0 +1,233 @@
+<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{title}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/tailwind.output.css" />
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+  <script src="./js/init-alpine.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" defer></script>
+  <script src="./js/charts-lines.js" defer></script>
+  <script src="./js/charts-pie.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./toaster/build/toastr.min.css">
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+      body{
+        font-family: 'Poppins', sans-serif;
+      }
+    </style>
+</head>
+
+<body>
+  {{> header }}
+  <main class="h-full pb-16 overflow-y-auto">
+    <div class="container px-6 mx-auto grid">
+
+      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+        Settings
+      </h2>
+      <!-- CTA -->
+
+      <div class="flex mt-2 mb-4 text-sm">
+        <label class="flex items-center dark:text-gray-400">
+          <img class="object-cover w-8 h-8 rounded-full" src="./img/avatar.jfif" alt="User Image" aria-hidden="true" />
+          <span class="ml-4">
+            change profile picture
+            <br>
+            <span class="text-red-600">
+              Max File Size is 20Mb
+            </span>
+          </span>
+
+
+          <button
+            class="flex items-center justify-between w-50 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple ml-4"
+            onclick="document.getElementById('getFile').click()">Upload
+            <input type="file" id="getFile" style="display:none" accept="image/jpeg,image/png">
+          </button>
+        </label>
+
+      </div>
+      {{!-- change password --}}
+            <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
+        Change Password
+      </h4>
+      <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <form action="/changepass" method="post">
+          <input type="text" name="id" hidden value="{{id}}">
+        <label class="block text-sm">
+          <span class="text-gray-700 dark:text-gray-400">
+            current password
+          </span>
+          <input
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+             name="currentpassword" type="password"/>
+        </label>
+        
+        <label class="block mt-4 text-sm">
+          <span class="text-gray-700 dark:text-gray-400">
+            New password
+          </span>
+          <input
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+             name="newpass" type="password"/>
+        </label>
+        <label class="block mt-4 text-sm">
+          <span class="text-gray-700 dark:text-gray-400">
+            Confirm password
+          </span>
+          <input
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+             name="confirmpass" type="password"/>
+        </label>
+        
+        <div class="my-6">
+          <button
+            class="flex items-center justify-between w-50 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+              change password
+          </button>
+        </form>
+        </div>
+      </div>
+      <!-- Information -->
+      <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
+        Change profile
+      </h4>
+      <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <form action="/update" method="post">
+          <input type="text" name="id" hidden value="{{id}}">
+        <label class="block text-sm">
+          <span class="text-gray-700 dark:text-gray-400">
+            Display Name
+          </span>
+          <input
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            value="{{name}}" name="name"/>
+        </label>
+        <label class="block mt-4 text-sm">
+          <span class="text-gray-700 dark:text-gray-400">
+            Email Address
+          </span>
+          <input
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            value="{{email}}" name="email"/>
+        </label>
+        <div class="my-6">
+          <button
+            class="flex items-center justify-between w-50 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+              Update Details
+          </button>
+        </form>
+        </div>
+      </div>
+
+      {{!-- Personal Information --}}
+      <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
+          Add Additional information
+      </h4>
+      <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+         <form action="/otherdetail" method="post">
+          <input type="text" name="id" hidden value="{{id}}">
+        <label class="block text-sm">
+          <span class="text-gray-700 dark:text-gray-400">Legal Name</span>
+          <input
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            value="{{name}}" disabled />
+        </label>
+
+        <div class="mt-4 text-sm">
+          <span class="text-gray-700 dark:text-gray-400">
+            Gender
+          </span>
+          <div class="mt-2">
+            <label class="inline-flex items-center text-gray-600 dark:text-gray-400">
+              <input type="radio"
+                class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                name="gender" value="Male" />
+              <span class="ml-2">Male</span>
+            </label>
+            <label class="inline-flex items-center ml-6 text-gray-600 dark:text-gray-400">
+              <input type="radio"
+                class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                name="gender" value="Female"/>
+              <span class="ml-2">Female</span>
+            </label>
+          </div>
+        </div>
+
+        <label class="block text-sm py-3">
+          <span class="text-gray-700 dark:text-gray-400">Address </span>
+          <input
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" type="text" name="address" value="{{address}}" />
+        </label>
+        <label class=" text-sm mt-4 py-3">
+          <span class="text-gray-700 dark:text-gray-400">City</span>
+          <input
+            class="block w-60 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="city" value="{{city}}" type="text" required />
+        </label>
+        <label>
+          <span class="text-gray-700 mt-4 dark:text-gray-400">State</span>
+          <input
+            class="block w-60 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="state" value="{{state}}" type="text" required/>
+          <span class="text-gray-700 dark:text-gray-400" name="country">Country</span>
+        </label>
+        <label>
+          <input
+            class="block w-60 mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" name="country" value="{{country}}" type="text" required />
+        </label>
+        
+        <div class="my-6">
+          <button
+            class="flex items-center justify-between w-50 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+              Save Details
+          </button>
+        </div>
+        </form>
+      </div>
+      <!-- Inputs with icons -->
+
+      <!-- Inputs with buttons -->
+    </div>
+  </main>
+  </div>
+  </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="./toaster/build/toastr.min.js"></script>
+      
+    <script>
+      toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    };
+       {{#if messages.success}}
+        toastr.success('<i class="fas fa-check-square"></i> {{messages.success}}')
+        {{/if}}
+       {{#if messages.error}}
+        toastr.error('<i class="fas fa-exclamation-triangle"></i> {{messages.error}}')
+        {{/if}}
+       
+    </script>
+</body>
+
+</html>
