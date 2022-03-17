@@ -19,7 +19,6 @@
   },
   "name": "authentication",
   "version": "1.0.0",
-  
   "main": "app.js",
   "scripts": {
     "tailwind": "tailwindcss build public/assets/css/tailwind.css -o public/assets/css/tailwind.output.css",
@@ -27,5 +26,8 @@
   },
   "author": "yash",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.0"
+  }
 }

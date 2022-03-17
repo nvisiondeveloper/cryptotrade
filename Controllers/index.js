@@ -1,3 +1,4 @@
+const { Result } = require('postcss');
 const con = require('../db_connect')
 
 const trade = (req, res) => {
@@ -16,11 +17,19 @@ const trade = (req, res) => {
 
 const pay = (req, res) => {
     if (req.session.loggedin) {
-        res.render('pay', {
-            title: "pay",
-            name: req.session.name,
-            active3: true
-        });
+       
+        console.log(req.session.coins);
+            res.render('pay', {
+                title: "pay",
+                id:req.session.index,
+                name: req.session.name,
+                privateKey : req.session.privateKey,
+                publicAddress: req.session.publicAddress,
+                coin:req.session.coins,                
+                active3: true
+            });
+     
+       
     }
     else {
         req.flash('info', 'Please First Login');

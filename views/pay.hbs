@@ -12,8 +12,15 @@
   <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="./js/init-alpine.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
+ <link rel="stylesheet" href="./toaster/build/toastr.min.css">
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" defer></script>
+
   <style>
     .fourth_cont {
       display: flex;
@@ -34,14 +41,15 @@
       -moz-appearance: textfield;
     }
   </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
-    <style>
-      body{
-        font-family: 'Poppins', sans-serif;
-      }
-    </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka&family=Poppins&family=Roboto&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
 </head>
 
 <body>
@@ -49,7 +57,7 @@
   <div class="container">
     <!-- Tabs -->
     <ul id="tabs" class="inline-flex w-full px-1 pt-2"
-      style="display: flex; align-items:center; justify-content:center">
+      style="display: flex; align-items:center; justify-content:center; ">
       <li class="px-4 py-2 -mb-px font-semibold text-gray-800 border-purple-600 rounded-t opacity-50 dark:text-white"><a
           id="default-tab" href="#first">Buy</a></li>
       <li class="px-4 py-2 font-semibold text-gray-800 rounded-t opacity-50 dark:text-white"><a href="#second">Sell</a>
@@ -63,13 +71,96 @@
     <!-- Tab Contents -->
     <div id="tab-contents">
       <div id="first" class="p-4 dark:text-white">
-        First tab
+        <div class="flex justify-center" style="flex-direction:column !important; align-items:center !important">
+          <div class="mb-3 xl:w-96" style="min-width: 216px;">
+          <form action="/buy" method="post" style="margin-bottom: 0;">
+            <select class="form-select appearance-none
+      block
+      w-full
+      px-3
+      py-1.5
+      text-base
+      font-normal
+      bg-gray-200 bg-clip-padding bg-no-repeat
+      rounded
+      transition
+      ease-in-out
+      m-0
+      dark:bg-gray-700
+      focus:text-gray-700 focus:bg-gray focus:outline-none" aria-label="Default select example" id="drop-down-coin"
+              style="color:grey;border: none !important;" name="coins">
+            </select>
+          </div>
+          <input type="hidden" value="{{privateKey}}" name="privateKey">
+           <input type="hidden" value="{{publicAddress}}" name="publicAddress">
+            <input type="hidden" value="{{name}}" name="username">
+            <input type="hidden" value="{{id}}" name="userid">
+          <input type="text" name="currentprice" id="price-in-coin" placeholder="Select coin"
+            class="xl:w-96 dark:bg-gray-700 bg-gray-200"
+            style="color:grey;padding: 7px; border:none;outline:none;border-radius:5px; margin-bottom: 0.75rem;"
+            readonly>
+          <input type="number" name="inr" id="buy-volume" placeholder="INR Amount"
+            class="xl:w-96 dark:bg-gray-700 bg-gray-200"
+            style="color:grey;padding: 7px; border:none;outline:none;border-radius:5px; margin-bottom: 0.75rem;"
+            value="" required>
+          <input type="text" name="total" id="user-pay" placeholder="Total"
+            class="xl:w-96 dark:bg-gray-700 bg-gray-200"
+            style="color:grey;padding: 7px; border:none;outline:none;border-radius:5px; margin-bottom: 0.75rem;"
+            readonly>
+          <button
+            class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+            type="text" style="padding-left:30px;padding-right:30px">
+            Buy
+          </button>
+          </form>
+        </div>
       </div>
       <div id="second" class="hidden p-4 dark:text-white">
-        Second tab
+        <div class="flex justify-center" style="flex-direction:column !important; align-items:center !important">
+          <div class="mb-3 xl:w-96" style="min-width: 216px;">
+          <form action="" method="none" style="margin-bottom: 0;">
+            <select class="form-select appearance-none
+      block
+      w-full
+      px-3
+      py-1.5
+      text-base
+      font-normal
+      bg-gray-200 bg-clip-padding bg-no-repeat
+      rounded
+      transition
+      ease-in-out
+      m-0
+      dark:bg-gray-700
+      focus:text-gray-700 focus:bg-gray focus:outline-none" aria-label="Default select example" id="drop-down-coin-2"
+              style="color:grey;border: none !important;" name="coins">
+            </select>
+          </div>
+          <input type="hidden" value="{{privateKey}}" >
+           <input type="hidden" value="{{publicAddress}}" >
+            <input type="hidden" value="{{name}}" >
+          <input type="text"  id="price-in-coin-2" placeholder="Select coin"
+            class="xl:w-96 dark:bg-gray-700 bg-gray-200"
+            style="color:grey;padding: 7px; border:none;outline:none;border-radius:5px; margin-bottom: 0.75rem;"
+            readonly>
+          <input type="number"  id="buy-volume-2" placeholder="INR Amount"
+            class="xl:w-96 dark:bg-gray-700 bg-gray-200"
+            style="color:grey;padding: 7px; border:none;outline:none;border-radius:5px; margin-bottom: 0.75rem;"
+            value="" required>
+          <input type="text" id="user-pay-2" placeholder="Total"
+            class="xl:w-96 dark:bg-gray-700 bg-gray-200"
+            style="color:grey;padding: 7px; border:none;outline:none;border-radius:5px; margin-bottom: 0.75rem;"
+            readonly>
+          <button
+            class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+            type="text" style="padding-left:30px;padding-right:30px">
+            Sell
+          </button>
+          </form>
+        </div>
       </div>
       <div id="third" class="hidden p-4 dark:text-white" style="width: 100%;">
-        <form class="w-full" style="margin-top:30px; margin-bottom:30px">
+        <form class="w-full" style="margin-top:30px; margin-bottom:30px" method="none">
           <div class="md:flex md:items-center mb-6">
             <div class="md:w-1/4">
               <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
@@ -78,8 +169,8 @@
             </div>
             <div class="md:w-2/4">
               <input
-                class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                id="inline-full-name" type="number" placeholder="₹0">
+                class="bg-gray-200 appearance-none rounded w-full py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300"
+                id="inline-full-name" type="number" placeholder="₹0" required>
             </div>
           </div>
           <div class="md:flex md:items-center mb-6">
@@ -90,8 +181,8 @@
             </div>
             <div class="md:w-2/4">
               <input
-                class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                id="inline-password" type="text" placeholder="Address (ether only)">
+                class="bg-gray-200 appearance-none rounded w-full py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300"
+                id="inline-password" type="text" placeholder="Address (ether only)" required autocomplete="off">
             </div>
           </div>
           <p id="show_ether" class="md:w-3/4 block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pb-4 pr-0"
@@ -113,7 +204,7 @@
           <img src="" alt="qr" id="qrcode">
           <p id="qr_add"
             class="bg-gray-200 appearance-none rounded py-2 px-4  leading-tight dark:text-stone-50 dark:bg-gray-700"
-            style="font-size: 12px;margin:20px 0; width:100%; text-align:center;min-width:285px"></p>
+            style="font-size: 12px;margin:20px 0; width:100%; text-align:center;min-width:340px">{{publicAddress}}</p>
           <div class="asset bg-gray-200 appearance-none rounded py-2 px-4 dark:text-stone-50 dark:bg-gray-700 "
             style="display: flex; align-items:center; width: 100%; justify-content:center;min-width:285px">
             <img src="https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880" alt="" height="40px"
@@ -125,11 +216,17 @@
           </div>
           <p id="qr_add"
             class="bg-gray-200 appearance-none rounded py-2 px-4  leading-tight dark:text-stone-50 dark:bg-gray-700"
-            style="font-size: 13px;margin:20px 0; width:100%; text-align:center;min-width:285px">Only send Ethereum (ETHER) to this
+            style="font-size: 13px;margin:20px 0; width:100%; text-align:center;min-width:285px">Only send Ethereum
+            (ETHER) to this
             address</p>
         </div>
       </div>
     </div>
+
+  </div>
+  <div>
+    <h1>coins</h1>
+    <p>{{coin}}</p>
   </div>
 
   <script>
@@ -147,7 +244,6 @@
         let tabContents = document.querySelector("#tab-contents");
 
         for (let i = 0; i < tabContents.children.length; i++) {
-
           tabTogglers[i].parentElement.classList.remove("border-purple-600", "border-b-4", "-mb-px", "opacity-100"); tabContents.children[i].classList.remove("hidden");
           if ("#" + tabContents.children[i].id === tabName) {
             continue;
@@ -186,12 +282,121 @@
   <script>
     $(document).ready(function () {
       var qr_api = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=";
-      var address = "0x7d216929Ea2A1a1f3FF9f36cbB6cbADA526e38";
+      var address = $('#qr_add').text();
+      console.log(address)
       var qr_img = qr_api + address;
       $('#qrcode').attr("src", qr_img)
-      $('#qr_add').text(address)
+  
     });
   </script>
+
+  {{!-- appending data to drop down --}}
+  <script>
+    $(document).ready(function () {
+      var coins = {
+        "async": true, "crossDomain": true, "url":
+          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc",
+        "method": "GET"
+      }
+      $.ajax(coins).done(function (response) {
+        response.map(myFunction);
+        function myFunction(num) {
+          $("#drop-down-coin").append('<option value="' + num.id + '">' + num.name + '</option>')
+          $("#drop-down-coin-2").append('<option value="' + num.id + '">' + num.name + '</option>')
+          if (num.id == "bitcoin") {
+            {{!-- var btc = "Current value: " + num.current_price --}}
+            $('#price-in-coin').attr("value", num.current_price);
+            $('#price-in-coin-2').attr("value", num.current_price);
+          }
+        }
+        $('#drop-down-coin').change(function () {
+          var val = $(this).val();
+          $('#buy-volume').val("");
+          $('#user-pay').attr("value", "");
+          response.map(function func(num) {
+            if (num.id == val) {
+              {{!-- var coin_price = "Current value: " + num.current_price --}}
+              $('#price-in-coin').attr("value", num.current_price);
+            }
+
+          })
+        })
+        $('#drop-down-coin-2').change(function () {
+          var val = $(this).val();
+          $('#buy-volume-2').val("");
+          $('#user-pay-2').attr("value", "");
+          response.map(function func(num) {
+            if (num.id == val) {
+              {{!-- var coin_price = "Current value: " + num.current_price --}}
+              $('#price-in-coin-2').attr("value", num.current_price);
+            }
+
+          })
+        })
+
+        $('#buy-volume').keyup(function () {
+          var val = $('#drop-down-coin').val();
+          response.map(function func(num) {
+            if (num.id == val) {
+              var coin_price = num.current_price;
+              var coin_one = 1 / coin_price;
+              var user_in = $('#buy-volume').val();
+              var show_price = user_in * coin_one;
+              $('#user-pay').attr("value", show_price);
+            }
+          })
+        })
+
+        $('#buy-volume-2').keyup(function () {
+          var val = $('#drop-down-coin-2').val();
+          response.map(function func(num) {
+            if (num.id == val) {
+              var coin_price = num.current_price;
+              var coin_one = 1 / coin_price;
+              var user_in = $('#buy-volume-2').val();
+              var show_price = user_in * coin_one;
+              $('#user-pay-2').attr("value", show_price);
+            }
+          })
+        })
+      });
+    });
+  </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="./toaster/build/toastr.min.js"></script> 
+  <script>
+  toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": true,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
+   {{#if messages.info}}
+    toastr.warning('<i class="fas fa-exclamation-triangle"></i> {{messages.info}}')
+    {{/if}}
+     {{#if messages.success}}
+    toastr.success('<i class="fas fa-check-square"></i> {{messages.success}}')
+    {{/if}}
+
+      {{#if messages.error}}
+    toastr.error('<i class="fas fa-exclamation-triangle"></i> {{messages.error}}')
+    {{/if}}
+    {{#if messages.warning}}
+    toastr.warning('<i class="fas fa-exclamation-circle"></i> {{messages.warning}}')
+    {{/if}}
+
+</script>
 </body>
 
 </html>

@@ -7,7 +7,8 @@ const { register,
     logout,
     update ,
     otherdetail,
-    changepass} = require('../Controllers/auth');
+    changepass,
+    buy} = require('../Controllers/auth');
 
 const { trade,
     pay,
@@ -48,6 +49,11 @@ router.post('/update', update)
 router.post('/changepass',changepass)
 router.post('/otherdetail',otherdetail)
 
+//email verification routes
+
+router.get('/verify',(req,res)=>{
+    res.render('verify');
+})
 
 // logged in user routes
 router.get('/dashboard',dashboard)
@@ -57,5 +63,8 @@ router.get('/profile', profile)
 router.get('/settings',settings)
 router.get('/:id',getcoin)
 
+
+//for buying coins routes
+router.post('/buy',buy)
 
 module.exports = router

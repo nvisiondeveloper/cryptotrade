@@ -153,7 +153,19 @@ const changepass = (req, res) => {
     })
 
 }
+const buy = (req,res)=>{
+    const {userid,privateKey,publicAddress,username,coins,currentprice,inr,total}= req.body
+    var sql = "INSERT INTO buys SET ?";
+    con.query(sql, {userid:userid, privateKey: privateKey, publicAddress: publicAddress, username: username, coinname:coins,curr_price:currentprice,inr:inr,total:total }, (err, result) => {
+        if (err) throw err;
+        else {
+            req.flash('success', 'Hurray! You buy this cryptocurrency')
+            res.redirect('pay')
+        }
+    })
+}
 module.exports = { 
+    buy,
     register, 
     login, 
     logout, 

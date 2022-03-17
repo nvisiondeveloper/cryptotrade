@@ -63,6 +63,7 @@
           <h1 class="title-font font-medium text-3xl text-gray-900">MOST TRUSTED BITCOIN & CRYPTOCURRENCY EXCHANGE</h1>
           <p class="leading-relaxed mt-4">Poke slow-carb mixtape Buy, Sell & Trade Bitcoin, Ethereum, Ripple, Litecoin and more cryptocurrencies in India. Start trading now!</p>
         </div>
+      
         <div
           class="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0"
         >
@@ -93,10 +94,9 @@
             />
           </div>
           <button
-            class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-800 rounded text-lg" type="submit"
+            class="text-white bg-indigo-500 shadow-lg shadow-indigo-500/50  border-0 py-2 px-8 focus:outline-none rounded text-lg" type="submit"
           >Signin</button>
-          <p class="text-xs text-gray-500 mt-3">Literally you probably haven't
-            heard of them jean shorts.</p>
+          <p class="text-xs text-gray-500 mt-3">Don't have an account? <a href="/register" class="text-blue-600">Register here</a></p>
         </div>
     </form>
       </div>
@@ -176,9 +176,11 @@
    {{#if messages.info}}
     toastr.warning('<i class="fas fa-exclamation-triangle"></i> {{messages.info}}')
     {{/if}}
-     {{#if messages.success}}
+         {{#if messages.success}}
     toastr.success('<i class="fas fa-check-square"></i> {{messages.success}}')
-    {{/if}}
+
+  
+{{/if}}
 
       {{#if messages.error}}
     toastr.error('<i class="fas fa-exclamation-triangle"></i> {{messages.error}}')

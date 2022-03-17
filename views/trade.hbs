@@ -153,6 +153,25 @@
         background-color: transparent;
       }
     }
+   #loading {
+    border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+    visibility: hidden;
+  animation: spin 2s linear infinite;
+   
+}
+#loading.display {
+    visibility: visible;
+}
+
+   @keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+
+}
   </style>
 </head>
 
@@ -182,6 +201,7 @@
         </div>
       </div>
       <!-- New Table -->
+       <div id="loading"></div>
       <div class="w-full overflow-hidden rounded-lg shadow-xs">
         <div class="w-full overflow-x-auto">
           <table class="w-full whitespace-no-wrap" id="cointable">
@@ -199,74 +219,7 @@
             </tbody>
           </table>
         </div>
-        <div
-          class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
-          <span class="flex items-center col-span-3">
-            Showing 21-30 of 100
-          </span>
-          <span class="col-span-2"></span>
-          <!-- Pagination -->
-          <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-            <nav aria-label="Table navigation">
-              <ul class="inline-flex items-center">
-                <li>
-                  <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
-                    aria-label="Previous">
-                    <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                      <path
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd" fill-rule="evenodd"></path>
-                    </svg>
-                  </button>
-                </li>
-                <li>
-                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    1
-                  </button>
-                </li>
-                <li>
-                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    2
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    3
-                  </button>
-                </li>
-                <li>
-                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    4
-                  </button>
-                </li>
-                <li>
-                  <span class="px-3 py-1">...</span>
-                </li>
-                <li>
-                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    8
-                  </button>
-                </li>
-                <li>
-                  <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    9
-                  </button>
-                </li>
-                <li>
-                  <button class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
-                    aria-label="Next">
-                    <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-                      <path
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clip-rule="evenodd" fill-rule="evenodd"></path>
-                    </svg>
-                  </button>
-                </li>
-              </ul>
-            </nav>
-          </span>
-        </div>
+       
       </div>
       <!-- Charts -->
       <div x-show="isModalOpen" x-transition:enter="transition ease-out duration-150"
@@ -329,9 +282,24 @@
               "https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc",
             "method": "GET"
           }
+         const loader = document.querySelector("#loading");
+         function displayLoading() {
+            loader.classList.add("display");
+    // to stop loading after some time
+       setTimeout(() => {
+          loader.classList.remove("display");
+         }, 5000);
+}
+function hideLoading() {
+    loader.classList.remove("display");
+}
+
+          displayLoading()
           $.ajax(coins).done(function (response) {
             response.map(myFunction);
+             
             function myFunction(num) {
+              hideLoading();
               $("#coin").append('<tr class="text-gray-700 dark:text-gray-400"><td class="px-4 py-3"><div class="flex items-center text-sm"><div class="relative w-8 h-8 mr-3 rounded-full md:block"><img class="object-cover w-full h-full rounded-full" src="' + num.image + '" alt="" loading="lazy"/><div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div></div><div><p class="font-semibold"><a href="/' + num.id + '">' + num.name + '</a></p><p class="text-xs text-gray-600 dark:text-gray-400">' + num.symbol + '</p></div></div></td><td id="coin-price-' + num.market_cap_rank + '" class="px-4 py-3 text-sm"><span id="all-price-span">₹' + num.current_price + '</span></td><td class="px-4 py-3 text-xs"><span class="changer px-2 py-1 font-semibold leading-tight rounded-full" id="coin-no-' + num.market_cap_rank + '">' + num.price_change_percentage_24h + '%</span></td><td class="px-4 py-3 text-sm">  <button @click="openModal" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">Buy</button>');
 
               var temp = "#coin-no-" + num.market_cap_rank;
@@ -396,6 +364,7 @@
         });
       </script>
       <script>  
+        //for searching coins
       $(document).ready(function(){  
            $('#search').keyup(function(){
              // Search Text
