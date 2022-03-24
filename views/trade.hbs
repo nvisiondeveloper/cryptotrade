@@ -276,6 +276,7 @@
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
       <script>
+        //loading
         $(document).ready(function () {
           var coins = {
             "async": true, "crossDomain": true, "url":
@@ -285,16 +286,16 @@
          const loader = document.querySelector("#loading");
          function displayLoading() {
             loader.classList.add("display");
-    // to stop loading after some time
-       setTimeout(() => {
+        // to stop loading after some time
+        setTimeout(() => {
           loader.classList.remove("display");
          }, 5000);
-}
-function hideLoading() {
-    loader.classList.remove("display");
-}
+        }
+        function hideLoading() {
+          loader.classList.remove("display");
+        }
 
-          displayLoading()
+        displayLoading()
           $.ajax(coins).done(function (response) {
             response.map(myFunction);
              

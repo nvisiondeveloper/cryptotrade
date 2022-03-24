@@ -180,7 +180,7 @@
   "positionClass": "toast-top-right",
   "preventDuplicates": false,
   "onclick": null,
-  "showDuration": "300",
+  "showDuration": "3000",
   "hideDuration": "1000",
   "timeOut": "5000",
   "extendedTimeOut": "1000",
@@ -190,15 +190,15 @@
   "hideMethod": "fadeOut"
 }
    {{#if messages.success}}
-    toastr.success('<i class="fas fa-check-square"></i> {{messages.success}}')
+    toastr.success('{{messages.success}}')
     {{/if}}
 
       {{#if messages.error}}
-    toastr.error('<i class="fas fa-exclamation-triangle"></i> {{messages.error}}')
+    toastr.error('{{messages.error}}')
     {{/if}}
 
      {{#if messages.warning}}
-    toastr.info('<i class="fas-solid fas-brake-warning"></i>{{messages.warning}}')
+    toastr.info('{{messages.warning}}')
     {{/if}}
    
 </script>

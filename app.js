@@ -11,6 +11,10 @@ const dotenv = require('dotenv');
 const flash = require('express-flash');
 dotenv.config({path:'./.env'});
 var hbs = require('hbs');
+// const helmet = require('helmet')
+// app.use(helmet());
+// app.use(helmet.hidePoweredBy());
+// app.use(helmet.contentSecurityPolicy());
 //template engine
 
 app.set('view engine','hbs')
@@ -25,13 +29,15 @@ app.use(express.json())
 app.use(cookieParser());
 app.use(flash())
 
-const oneDay = 1000 * 60 * 60 * 24;
+// const oneDay = 1000 * 60 * 60 * 24;
+const expiryDate = new Date(Date.now() + 86400) // 1 day
 app.use(session({ 
     secret: process.env.COOKIE_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: oneDay }
+    resave: true,
+    saveUninitialized: false,
+    cookie: { expires: expiryDate }
 }))
+console.log(session)
 //routes
 
 app.use('/',require('./routers/index'))
