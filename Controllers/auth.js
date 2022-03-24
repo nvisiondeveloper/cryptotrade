@@ -1,7 +1,13 @@
-const con = require('../db_connect')
-
-
+const con = require('../db_connect');
+const {validationResult} = require('express-validator');
+const jwt = require('jsonwebtoken')
 const register = async (req, res) => {
+    const errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+        req.flash('error',errors.errors[0].msg)
+        return res.render('register');
+    }
     const {name,email,password} = req.body;
     con.query("SELECT email,name FROM USERS WHERE email  = ? or name = ?", [email, name], (err, result) => {
         if (err) throw err;
@@ -38,6 +44,13 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     
     const {email,password} = req.body;
+    const errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+        req.flash('error',errors.errors[0].msg)
+        return res.render('login');
+    }
+   
     // Ensure the input fields exists and are not empty
     if (email && password) {
         // Execute SQL query that'll select the account from the database based on the specified username and password
@@ -59,9 +72,16 @@ const login = async (req, res) => {
                 req.session.gender = results[0].gender;
                 req.session.privateKey = results[0].privateKey;
                 req.session.publicAddress = results[0].publicAddress;
-               
+                const theToken = jwt.sign({id:results[0].id},'the-super-strong-secrect',{ expiresIn: '1h' });
+                // console.log(theToken);
+
+                res.cookie('jwt',theToken,{
+                    httpOnly:true,
+                    maxAge:12000000000
+                })
                 // Redirect to home page
-                res.redirect('/dashboard');
+                res.redirect('dashboard');
+                res.end()
             } else {
                 req.flash('error', 'Invalid Credential')
                 res.redirect('login')
@@ -76,11 +96,12 @@ const login = async (req, res) => {
 }
 
 const logout = function (req, res) {
+    res.cookie('jwt','',{maxAge:0})
     req.session.destroy();
     res.redirect('/login');
 }
 
-const update = function (req, res, next) {
+const update = (req, res, next) =>{
     const { name ,email,id} = req.body;
     var sql = "UPDATE users set name =? , email =?  WHERE id = ?";
     con.query(sql, [name, email, id], (err, result) => {
@@ -119,13 +140,14 @@ const otherdetail = (req, res) => {
 
 }
 
-const changepass = (req, res) => {
+const changepass = async (req, res) => {
     var password = req.body.currentpassword;
     var newpass = req.body.newpass;
     var confirmpass = req.body.confirmpass;
     var id = req.body.id;
 
-    var sql = "SELECT * FROM users WHERE id = ? ";
+   
+    var sql =  "SELECT * FROM `users` WHERE `id`=?";
     con.query(sql, [id], (err, result) => {
        
         if (err) throw err;
@@ -153,7 +175,19 @@ const changepass = (req, res) => {
     })
 
 }
+const buy = (req,res)=>{
+    const {userid,privateKey,publicAddress,username,coins,currentprice,inr,total}= req.body
+    var sql = "INSERT INTO buys SET ?";
+    con.query(sql, {userid:userid, privateKey: privateKey, publicAddress: publicAddress, username: username, coinname:coins,curr_price:currentprice,inr:inr,total:total }, (err, result) => {
+        if (err) throw err;
+        else {
+            req.flash('success', 'Hurray! You buy this cryptocurrency')
+            res.redirect('pay')
+        }
+    })
+}
 module.exports = { 
+    buy,
     register, 
     login, 
     logout, 

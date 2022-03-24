@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="stylesheet" href="./css/tailwind.output.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
@@ -63,6 +64,7 @@
           <h1 class="title-font font-medium text-3xl text-gray-900">MOST TRUSTED BITCOIN & CRYPTOCURRENCY EXCHANGE</h1>
           <p class="leading-relaxed mt-4">Poke slow-carb mixtape Buy, Sell & Trade Bitcoin, Ethereum, Ripple, Litecoin and more cryptocurrencies in India. Start trading now!</p>
         </div>
+      
         <div
           class="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0"
         >
@@ -93,10 +95,9 @@
             />
           </div>
           <button
-            class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-800 rounded text-lg" type="submit"
+            class="text-white bg-indigo-500 shadow-lg shadow-indigo-500/50  border-0 py-2 px-8 focus:outline-none rounded text-lg" type="submit"
           >Signin</button>
-          <p class="text-xs text-gray-500 mt-3">Literally you probably haven't
-            heard of them jean shorts.</p>
+          <p class="text-xs text-gray-500 mt-3">Don't have an account? <a href="/register" class="text-blue-600">Register here</a></p>
         </div>
     </form>
       </div>
@@ -164,7 +165,7 @@
   "positionClass": "toast-top-right",
   "preventDuplicates": false,
   "onclick": null,
-  "showDuration": "300",
+  "showDuration": "3000",
   "hideDuration": "1000",
   "timeOut": "5000",
   "extendedTimeOut": "1000",
@@ -174,17 +175,17 @@
   "hideMethod": "fadeOut"
 }
    {{#if messages.info}}
-    toastr.warning('<i class="fas fa-exclamation-triangle"></i> {{messages.info}}')
+    toastr.warning('{{messages.info}}')
     {{/if}}
-     {{#if messages.success}}
-    toastr.success('<i class="fas fa-check-square"></i> {{messages.success}}')
-    {{/if}}
+         {{#if messages.success}}
+    toastr.success('{{messages.success}}')
+  {{/if}}
 
       {{#if messages.error}}
-    toastr.error('<i class="fas fa-exclamation-triangle"></i> {{messages.error}}')
+    toastr.error('{{messages.error}}')
     {{/if}}
     {{#if messages.warning}}
-    toastr.warning('<i class="fas fa-exclamation-circle"></i> {{messages.warning}}')
+    toastr.warning('{{messages.warning}}')
     {{/if}}
 
 </script>
