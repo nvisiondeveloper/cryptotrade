@@ -72,7 +72,7 @@ const login = async (req, res) => {
                 req.session.gender = results[0].gender;
                 req.session.privateKey = results[0].privateKey;
                 req.session.publicAddress = results[0].publicAddress;
-                const theToken = jwt.sign({id:results[0].id},'the-super-strong-secrect',{ expiresIn: '1h' });
+                const theToken = jwt.sign({id:results[0].id, isadmin : results[0].isAdmin},'the-super-strong-secrect',{ expiresIn: 12000000000 });
                 // console.log(theToken);
 
                 res.cookie('jwt',theToken,{

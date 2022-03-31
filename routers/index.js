@@ -1,9 +1,8 @@
 const express = require('express')
 const router = express.Router();
 const {body} = require('express-validator');
-const flash = require('express-flash')
 const con = require('../db_connect');
-const { isAuth } = require('../Controllers/getUser');
+const { isAuth,isAdmin } = require('../middlewares/verifyToken');
 const { register, 
     login, 
     logout,
@@ -18,6 +17,7 @@ const { trade,
     settings,
     getcoin,
     dashboard} = require('../Controllers/index');
+
 
 
 // Index page route
@@ -75,22 +75,23 @@ router.post('/update', update)
 router.post('/changepass',changepass)
 router.post('/otherdetail',otherdetail)
 
-//email verification routes
 
-router.get('/verify',(req,res)=>{
-    res.render('verify');
-})
+
+
 
 // logged in user routes
+router.get('/trade/:id',isAuth,getcoin)
 router.get('/dashboard',isAuth,dashboard)
 router.get('/trade', isAuth,trade)
 router.get('/pay',isAuth, pay)
 router.get('/profile', isAuth,profile)
 router.get('/settings',isAuth,settings)
-router.get('/:id',isAuth,getcoin)
+
 
 
 //for buying coins routes
 router.post('/buy',buy)
+
+
 
 module.exports = router

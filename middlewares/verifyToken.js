@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const conn = require('../db_connect')
 
-exports.isAuth = async (req,res,next) => {
+const isAuth = async (req,res,next) => {
 
     try{
 
@@ -29,6 +29,8 @@ exports.isAuth = async (req,res,next) => {
                 req.session.gender = results[0].gender;
                 req.session.privateKey = results[0].privateKey;
                 req.session.publicAddress = results[0].publicAddress;
+                req.session.isadmin = results[0].isAdmin;
+                console.log(req.session.isadmin);
                 next();
              }
             }
@@ -41,3 +43,15 @@ exports.isAuth = async (req,res,next) => {
         next(err);
     }
 }
+
+const isAdmin = (req,res,next)=>{
+    isAuth(req,res,()=>{
+        if(req.session.isadmin){
+            next();
+        }
+        else{
+            res.status(403).json("You are not allowed to do that!");
+        }
+    })
+}
+module.exports = { isAuth,isAdmin}

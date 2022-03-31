@@ -13,6 +13,7 @@
     "helmet": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
+    "node-ippopay": "^1.0.7",
     "nodemailer": "^6.7.2",
     "postcss": "^8.4.6",
     "postcss-cli": "^9.1.0",
