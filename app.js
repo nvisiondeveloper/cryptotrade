@@ -37,11 +37,11 @@ app.use(session({
     saveUninitialized: false,
     cookie: { expires: expiryDate }
 }))
-console.log(session)
+
 //routes
 
 app.use('/',require('./routers/index'))
-
+app.use('/admin',require('./routers/admin'))
 //server starting
 app.listen(PORT,()=>{
     console.log(`server listening on ${PORT}`)
